@@ -17,3 +17,4 @@ FROM alpine:latest
 COPY --from=builder /workspace/go-powerwall /go-powerwall
 
 ENTRYPOINT ["/go-powerwall"]
+CMD ["proxy"]
