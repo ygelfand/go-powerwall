@@ -18,8 +18,8 @@ type DeviceControllerResponse struct {
 			MicroGridOK        bool   `json:"microGridOK,omitempty"`
 		} `json:"islanding,omitempty"`
 		MeterAggregates []struct {
-			Location   string `json:"location,omitempty"`
-			RealPowerW int    `json:"realPowerW,omitempty"`
+			Location   string  `json:"location,omitempty"`
+			RealPowerW float64 `json:"realPowerW,omitempty"`
 		} `json:"meterAggregates,omitempty"`
 		PvInverters  []any `json:"pvInverters,omitempty"`
 		SiteShutdown struct {
@@ -39,15 +39,15 @@ type DeviceControllerResponse struct {
 					ISLANDFreqL1Main float64 `json:"ISLAND_FreqL1_Main,omitempty"`
 					ISLANDFreqL2Load float64 `json:"ISLAND_FreqL2_Load,omitempty"`
 					ISLANDFreqL2Main float64 `json:"ISLAND_FreqL2_Main,omitempty"`
-					ISLANDFreqL3Load int     `json:"ISLAND_FreqL3_Load,omitempty"`
-					ISLANDFreqL3Main int     `json:"ISLAND_FreqL3_Main,omitempty"`
+					ISLANDFreqL3Load float64 `json:"ISLAND_FreqL3_Load,omitempty"`
+					ISLANDFreqL3Main float64 `json:"ISLAND_FreqL3_Main,omitempty"`
 					ISLANDGridState  string  `json:"ISLAND_GridState,omitempty"`
 					ISLANDVL1NLoad   float64 `json:"ISLAND_VL1N_Load,omitempty"`
-					ISLANDVL1NMain   int     `json:"ISLAND_VL1N_Main,omitempty"`
-					ISLANDVL2NLoad   int     `json:"ISLAND_VL2N_Load,omitempty"`
-					ISLANDVL2NMain   int     `json:"ISLAND_VL2N_Main,omitempty"`
-					ISLANDVL3NLoad   int     `json:"ISLAND_VL3N_Load,omitempty"`
-					ISLANDVL3NMain   int     `json:"ISLAND_VL3N_Main,omitempty"`
+					ISLANDVL1NMain   float64 `json:"ISLAND_VL1N_Main,omitempty"`
+					ISLANDVL2NLoad   float64 `json:"ISLAND_VL2N_Load,omitempty"`
+					ISLANDVL2NMain   float64 `json:"ISLAND_VL2N_Main,omitempty"`
+					ISLANDVL3NLoad   float64 `json:"ISLAND_VL3N_Load,omitempty"`
+					ISLANDVL3NMain   float64 `json:"ISLAND_VL3N_Main,omitempty"`
 					IsComplete       bool    `json:"isComplete,omitempty"`
 					IsMIA            bool    `json:"isMIA,omitempty"`
 					LastRxTime       string  `json:"lastRxTime,omitempty"`
@@ -97,7 +97,7 @@ type DeviceControllerResponse struct {
 					PINVGridState string  `json:"PINV_GridState,omitempty"`
 					PINVPout      float64 `json:"PINV_Pout,omitempty"`
 					PINVState     string  `json:"PINV_State,omitempty"`
-					PINVVout      int     `json:"PINV_Vout,omitempty"`
+					PINVVout      float64 `json:"PINV_Vout,omitempty"`
 					IsMIA         bool    `json:"isMIA,omitempty"`
 				} `json:"PINV_Status,omitempty"`
 				Alerts struct {
@@ -121,10 +121,10 @@ type DeviceControllerResponse struct {
 					PVACAppGitHash []int `json:"PVAC_appGitHash,omitempty"`
 				} `json:"PVAC_InfoMsg,omitempty"`
 				PVACLogging struct {
-					PVACPVCurrentA         int     `json:"PVAC_PVCurrent_A,omitempty"`
+					PVACPVCurrentA         float64 `json:"PVAC_PVCurrent_A,omitempty"`
 					PVACPVCurrentB         float64 `json:"PVAC_PVCurrent_B,omitempty"`
 					PVACPVCurrentC         float64 `json:"PVAC_PVCurrent_C,omitempty"`
-					PVACPVCurrentD         int     `json:"PVAC_PVCurrent_D,omitempty"`
+					PVACPVCurrentD         float64 `json:"PVAC_PVCurrent_D,omitempty"`
 					PVACPVMeasuredVoltageA float64 `json:"PVAC_PVMeasuredVoltage_A,omitempty"`
 					PVACPVMeasuredVoltageB float64 `json:"PVAC_PVMeasuredVoltage_B,omitempty"`
 					PVACPVMeasuredVoltageC float64 `json:"PVAC_PVMeasuredVoltage_C,omitempty"`
@@ -135,7 +135,7 @@ type DeviceControllerResponse struct {
 				} `json:"PVAC_Logging,omitempty"`
 				PVACStatus struct {
 					PVACFout  float64 `json:"PVAC_Fout,omitempty"`
-					PVACPout  int     `json:"PVAC_Pout,omitempty"`
+					PVACPout  float64 `json:"PVAC_Pout,omitempty"`
 					PVACState string  `json:"PVAC_State,omitempty"`
 					PVACVout  float64 `json:"PVAC_Vout,omitempty"`
 					IsMIA     bool    `json:"isMIA,omitempty"`
@@ -169,35 +169,35 @@ type DeviceControllerResponse struct {
 			} `json:"PVS,omitempty"`
 			Sync struct {
 				METERXAcMeasurements struct {
-					MeterXCtaI                 int       `json:"METER_X_CTA_I,omitempty"`
-					METERXCTAInstReactivePower int       `json:"METER_X_CTA_InstReactivePower,omitempty"`
-					METERXCTAInstRealPower     int       `json:"METER_X_CTA_InstRealPower,omitempty"`
-					MeterXCtbI                 int       `json:"METER_X_CTB_I,omitempty"`
-					METERXCTBInstReactivePower int       `json:"METER_X_CTB_InstReactivePower,omitempty"`
-					METERXCTBInstRealPower     int       `json:"METER_X_CTB_InstRealPower,omitempty"`
-					MeterXCtcI                 int       `json:"METER_X_CTC_I,omitempty"`
-					METERXCTCInstReactivePower int       `json:"METER_X_CTC_InstReactivePower,omitempty"`
-					METERXCTCInstRealPower     int       `json:"METER_X_CTC_InstRealPower,omitempty"`
-					MeterXVl1N                 int       `json:"METER_X_VL1N,omitempty"`
-					MeterXVl2N                 int       `json:"METER_X_VL2N,omitempty"`
-					MeterXVl3N                 int       `json:"METER_X_VL3N,omitempty"`
+					MeterXCtaI                 float64   `json:"METER_X_CTA_I,omitempty"`
+					METERXCTAInstReactivePower float64   `json:"METER_X_CTA_InstReactivePower,omitempty"`
+					METERXCTAInstRealPower     float64   `json:"METER_X_CTA_InstRealPower,omitempty"`
+					MeterXCtbI                 float64   `json:"METER_X_CTB_I,omitempty"`
+					METERXCTBInstReactivePower float64   `json:"METER_X_CTB_InstReactivePower,omitempty"`
+					METERXCTBInstRealPower     float64   `json:"METER_X_CTB_InstRealPower,omitempty"`
+					MeterXCtcI                 float64   `json:"METER_X_CTC_I,omitempty"`
+					METERXCTCInstReactivePower float64   `json:"METER_X_CTC_InstReactivePower,omitempty"`
+					METERXCTCInstRealPower     float64   `json:"METER_X_CTC_InstRealPower,omitempty"`
+					MeterXVl1N                 float64   `json:"METER_X_VL1N,omitempty"`
+					MeterXVl2N                 float64   `json:"METER_X_VL2N,omitempty"`
+					MeterXVl3N                 float64   `json:"METER_X_VL3N,omitempty"`
 					IsComplete                 bool      `json:"isComplete,omitempty"`
 					IsMIA                      bool      `json:"isMIA,omitempty"`
 					LastRxTime                 time.Time `json:"lastRxTime,omitempty"`
 				} `json:"METER_X_AcMeasurements,omitempty"`
 				METERYAcMeasurements struct {
-					MeterYCtaI                 int       `json:"METER_Y_CTA_I,omitempty"`
-					METERYCTAInstReactivePower int       `json:"METER_Y_CTA_InstReactivePower,omitempty"`
-					METERYCTAInstRealPower     int       `json:"METER_Y_CTA_InstRealPower,omitempty"`
-					MeterYCtbI                 int       `json:"METER_Y_CTB_I,omitempty"`
-					METERYCTBInstReactivePower int       `json:"METER_Y_CTB_InstReactivePower,omitempty"`
-					METERYCTBInstRealPower     int       `json:"METER_Y_CTB_InstRealPower,omitempty"`
-					MeterYCtcI                 int       `json:"METER_Y_CTC_I,omitempty"`
-					METERYCTCInstReactivePower int       `json:"METER_Y_CTC_InstReactivePower,omitempty"`
-					METERYCTCInstRealPower     int       `json:"METER_Y_CTC_InstRealPower,omitempty"`
-					MeterYVl1N                 int       `json:"METER_Y_VL1N,omitempty"`
-					MeterYVl2N                 int       `json:"METER_Y_VL2N,omitempty"`
-					MeterYVl3N                 int       `json:"METER_Y_VL3N,omitempty"`
+					MeterYCtaI                 float64   `json:"METER_Y_CTA_I,omitempty"`
+					METERYCTAInstReactivePower float64   `json:"METER_Y_CTA_InstReactivePower,omitempty"`
+					METERYCTAInstRealPower     float64   `json:"METER_Y_CTA_InstRealPower,omitempty"`
+					MeterYCtbI                 float64   `json:"METER_Y_CTB_I,omitempty"`
+					METERYCTBInstReactivePower float64   `json:"METER_Y_CTB_InstReactivePower,omitempty"`
+					METERYCTBInstRealPower     float64   `json:"METER_Y_CTB_InstRealPower,omitempty"`
+					MeterYCtcI                 float64   `json:"METER_Y_CTC_I,omitempty"`
+					METERYCTCInstReactivePower float64   `json:"METER_Y_CTC_InstReactivePower,omitempty"`
+					METERYCTCInstRealPower     float64   `json:"METER_Y_CTC_InstRealPower,omitempty"`
+					MeterYVl1N                 float64   `json:"METER_Y_VL1N,omitempty"`
+					MeterYVl2N                 float64   `json:"METER_Y_VL2N,omitempty"`
+					MeterYVl3N                 float64   `json:"METER_Y_VL3N,omitempty"`
 					IsComplete                 bool      `json:"isComplete,omitempty"`
 					IsMIA                      bool      `json:"isMIA,omitempty"`
 					LastRxTime                 time.Time `json:"lastRxTime,omitempty"`

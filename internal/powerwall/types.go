@@ -1,5 +1,21 @@
 package powerwall
 
+import (
+	"net/http"
+
+	"golang.org/x/sync/semaphore"
+)
+
+type PowerwallGateway struct {
+	endpoint   string
+	password   string
+	httpClient *http.Client
+	Din        string
+	refreshSem *semaphore.Weighted
+	Config     *ConfigResponse
+	Controller *DeviceControllerResponse
+}
+
 type State struct {
 	PvStrings     map[string]PvString
 	Inverters     []Inverter

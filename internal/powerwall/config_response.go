@@ -23,7 +23,7 @@ type ConfigResponse struct {
 				MaxIdleConnsPerHost int    `json:"max_idle_conns_per_host,omitempty"`
 			} `json:"https_conf,omitempty"`
 		} `json:"connection,omitempty"`
-		RealPowerScaleFactor int `json:"real_power_scale_factor,omitempty"`
+		RealPowerScaleFactor float64 `json:"real_power_scale_factor,omitempty"`
 	} `json:"meters,omitempty"`
 	BatteryBlocks []struct {
 		Vin                      string `json:"vin,omitempty"`

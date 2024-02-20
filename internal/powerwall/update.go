@@ -1,14 +1,41 @@
 package powerwall
 
 import (
+	"encoding/json"
 	"log"
 	"time"
 )
 
-func (p *PowerwallGateway) Refresh() {
+func (p *PowerwallGateway) Refresh(force bool) {
+	if !force {
+		if !p.refreshSem.TryAcquire(1) {
+			return
+		}
+		defer p.refreshSem.Release(1)
+	}
 	log.Println("Refreshing state")
+	p.UpdateController()
+	p.UpdateConfig()
+}
+
+func (p *PowerwallGateway) UpdateController() {
 	res := p.RunQuery("DeviceControllerQuery", nil)
-	_ = res
+	if res != nil {
+		err := json.Unmarshal([]byte(*res), &p.Controller)
+		if err != nil {
+			log.Println(err)
+		}
+	}
+}
+
+func (p *PowerwallGateway) UpdateConfig() {
+	res := p.GetConfig()
+	if res != nil {
+		err := json.Unmarshal([]byte(*res), &p.Config)
+		if err != nil {
+			log.Println(err)
+		}
+	}
 }
 
 func (p *PowerwallGateway) PeriodicRefresh(interval time.Duration) {
@@ -20,7 +47,7 @@ func (p *PowerwallGateway) PeriodicRefresh(interval time.Duration) {
 			return
 		}
 		refreshing = true
-		p.Refresh()
+		p.Refresh(false)
 		refreshing = false
 	}
 }

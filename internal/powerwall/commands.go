@@ -8,38 +8,25 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/ygelfand/go-powerwall/internal/powerwall/queries"
+	"golang.org/x/sync/semaphore"
 	"google.golang.org/protobuf/proto"
 )
 
-type PowerwallGateway struct {
-	endpoint   string
-	password   string
-	httpClient *http.Client
-	Din        string
-}
+func NewPowerwallGateway(endpoint string, password string) *PowerwallGateway {
+	pwr := &PowerwallGateway{
+		password: password,
+		endpoint: endpoint,
+	}
 
-func NewPowerwallGateway() *PowerwallGateway {
-	pwr := &PowerwallGateway{}
 	pwr.httpClient = pwr.getClient()
-	val, present := os.LookupEnv("POWERWALL_PASSWORD")
-	if !present {
-		log.Fatal("Please set POWERWALL_PASSWORD environment variable to full powerwall password")
-	}
-	pwr.password = val
-	val, present = os.LookupEnv("POWERWALL_ENDPOINT")
-	if present {
-		pwr.endpoint = val
-	} else {
-		pwr.endpoint = "https://192.168.91.1/tedapi"
-	}
-	pwr.Din = pwr.getDin()
+	pwr.Din = *pwr.getDin()
+	pwr.refreshSem = semaphore.NewWeighted(1)
 	return pwr
 }
 
-func (p *PowerwallGateway) GetConfig() string {
+func (p *PowerwallGateway) GetConfig() *string {
 	pm := &ParentMessage{
 		Message: &MessageEnvelope{
 			Config: &ConfigType{
@@ -69,23 +56,26 @@ func (p *PowerwallGateway) GetConfig() string {
 	reqbody, err := proto.Marshal(pm)
 	resp, err := p.httpClient.Do(p.getRequest("POST", "v1", bytes.NewBuffer(reqbody)))
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
 	pr := &ParentMessage{}
 	proto.Unmarshal(body, pr)
-	return pr.Message.Config.GetRecv().File.Text
 
+	return &pr.Message.Config.GetRecv().File.Text
 }
 
-func (p *PowerwallGateway) RunQuery(query string, params interface{}) string {
+func (p *PowerwallGateway) RunQuery(query string, params interface{}) *string {
 	var reqbody string
 	queryObj := queries.GetQuery(query)
 	if queryObj == nil {
-		log.Fatalf("Query: %s not found", query)
+		log.Printf("Query: %s not found", query)
+		return nil
 	}
 	if params == nil {
 		if queryObj.DefaultParams != nil {
@@ -96,7 +86,8 @@ func (p *PowerwallGateway) RunQuery(query string, params interface{}) string {
 	} else {
 		obj, err := json.Marshal(params)
 		if err != nil {
-			log.Fatalln(err)
+			log.Println(err)
+			return nil
 		}
 		reqbody = string(obj)
 	}
@@ -135,36 +126,43 @@ func (p *PowerwallGateway) RunQuery(query string, params interface{}) string {
 	body, err := proto.Marshal(pm)
 	resp, err := p.httpClient.Do(p.getRequest("POST", "v1", bytes.NewBuffer(body)))
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
 	body, err = io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
 
 	pr := &ParentMessage{}
 	err = proto.Unmarshal(body, pr)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
-	return pr.Message.Payload.Recv.Text
+	return &pr.Message.Payload.Recv.Text
 }
-func (p *PowerwallGateway) getDin() string {
+func (p *PowerwallGateway) getDin() *string {
 	resp, err := p.httpClient.Do(p.getRequest("GET", "din", nil))
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
-	return string(body)
+	res := string(body)
+	return &res
 }
 
 func (p *PowerwallGateway) getRequest(method, path string, body io.Reader) *http.Request {
 	req, err := http.NewRequest(method, fmt.Sprintf("%s/%s", p.endpoint, path), body)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return nil
 	}
 	req.Header.Set("Content-type", "application/octet-string")
 	req.SetBasicAuth("Tesla_Energy_Device", p.password)
