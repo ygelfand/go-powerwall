@@ -14,7 +14,9 @@ func (app *Api) strings(c *gin.Context) {
 
 func parseStrings(c *powerwall.DeviceControllerResponse) map[string]interface{} {
 	strings := map[string]interface{}{}
-	_ = strings
+	if c == nil {
+		return strings
+	}
 	for id, inv := range c.EsCan.Bus.Pvac {
 		if !inv.PVACStatus.IsMIA {
 			idx := pvacIndex(id)

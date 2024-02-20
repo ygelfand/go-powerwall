@@ -65,7 +65,11 @@ func (p *PowerwallGateway) GetConfig() *string {
 		return nil
 	}
 	pr := &ParentMessage{}
-	proto.Unmarshal(body, pr)
+	err = proto.Unmarshal(body, pr)
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	return &pr.Message.Config.GetRecv().File.Text
 }

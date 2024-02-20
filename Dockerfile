@@ -11,9 +11,9 @@ RUN go mod download
 COPY main.go main.go
 COPY internal/ internal/
 COPY cmd/ cmd/
-RUN go build -ldflags="-w -s"  -o go-powerwall main.go
+RUN CGO_ENABLED=0 go build -ldflags="-w -s"  -o go-powerwall main.go
 
-FROM alpine:latest
+FROM scratch
 COPY --from=builder /workspace/go-powerwall /go-powerwall
 
 ENTRYPOINT ["/go-powerwall"]
