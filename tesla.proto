@@ -1,0 +1,87 @@
+syntax = "proto3";
+option go_package = "internal/powerwall";
+
+package tedapi;
+
+// ***** Parent *****
+
+message ParentMessage {
+  MessageEnvelope message = 1;
+  Tail tail = 2;
+}
+
+message MessageEnvelope {
+  int32 deliveryChannel = 1;
+  Participant sender = 2;
+  Participant recipient = 3;
+  optional ConfigType config = 15;
+  optional QueryType payload = 16;
+}
+
+message Participant {
+  oneof id {
+    string din = 1;
+    int32 teslaService = 2;
+    int32 local = 3;
+    int32 authorizedClient = 4;
+  }
+}
+
+message Tail {
+  int32 value = 1;
+}
+
+enum Format {
+  None = 0;
+  Raw = 1;
+  Json = 2;
+}
+
+// ***** Query = 16 *****
+
+message QueryType {  // 16
+  optional PayloadQuerySend send = 1;
+  optional PayloadString recv = 2;
+}
+
+message PayloadQuerySend {  // 1
+  Format requestFormat = 1;
+  optional PayloadString payload = 2;
+  optional bytes signature = 3;
+  optional StringValue body  = 4;
+}
+
+// ***** Config = 15 *****
+
+message ConfigType { // 15
+  oneof config {
+    PayloadConfigSend send = 1;
+    PayloadConfigRecv recv = 2;
+  }
+}
+
+message PayloadConfigSend { // 1
+  int32 num = 1;
+  string file = 2;
+}
+
+message PayloadConfigRecv { // 2
+  ConfigString file = 1;
+  bytes code = 2;
+}
+
+message ConfigString {
+  string name = 1;
+  string text = 100;
+}
+
+// ***** General *****
+
+message PayloadString {
+  int32 value = 1;
+  string text = 2;
+}
+
+message StringValue {
+  string value = 1;
+}
