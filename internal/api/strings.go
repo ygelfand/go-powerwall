@@ -24,10 +24,10 @@ func parseStrings(c *powerwall.DeviceControllerResponse) map[string]interface{} 
 			strings[fmt.Sprintf("B%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentB
 			strings[fmt.Sprintf("C%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentC
 			strings[fmt.Sprintf("D%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentD
-			strings[fmt.Sprintf("A%s_MeasuredVoltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageA
-			strings[fmt.Sprintf("B%s_MeasuredVoltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageB
-			strings[fmt.Sprintf("C%s_MeasuredVoltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageC
-			strings[fmt.Sprintf("D%s_MeasuredVoltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageD
+			strings[fmt.Sprintf("A%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageA
+			strings[fmt.Sprintf("B%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageB
+			strings[fmt.Sprintf("C%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageC
+			strings[fmt.Sprintf("D%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageD
 			strings[fmt.Sprintf("A%s_Power", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageA * inv.PVACLogging.PVACPVCurrentA
 			strings[fmt.Sprintf("B%s_Power", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageB * inv.PVACLogging.PVACPVCurrentB
 			strings[fmt.Sprintf("C%s_Power", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageC * inv.PVACLogging.PVACPVCurrentC
