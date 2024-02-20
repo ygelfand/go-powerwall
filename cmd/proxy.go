@@ -26,7 +26,7 @@ func newProxyCmd(opts *powerwallOptions) *cobra.Command {
 			if !o.onDemand {
 				go pwr.PeriodicRefresh(time.Duration(o.refreshInterval) * time.Second)
 			}
-			app.Run("localhost:8080")
+			app.Run(":8080")
 		},
 	}
 	proxyCmd.Flags().BoolVarP(&o.onDemand, "ondemand", "o", false, "disable periodic refresh")
