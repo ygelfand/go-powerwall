@@ -24,12 +24,12 @@ Global flags can be set using environment variables starting with `POWERWALL_`, 
 ## Examples
 - Start the Powerwall proxy server on the default port:
   ```bash
-  go-powerwall proxy
+  go-powerwall proxy -p ABCDEFGHIJ
   ```
 
 - Start the Powerwall proxy server on a custom port and disable periodic refresh:
   ```bash
-  go-powerwall proxy :8888 -o -p ABCDEFGH
+  go-powerwall proxy :8888 -o -p ABCDEFGHIJ
   ```
 
 ## Notes
