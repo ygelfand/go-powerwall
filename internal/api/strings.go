@@ -19,30 +19,29 @@ func (app *Api) parsedStrings() map[string]PvacString {
 	for id, inv := range app.powerwall.Controller.EsCan.Bus.Pvac {
 		if !inv.PVACStatus.IsMIA {
 			idx := pvacIndex(id)
-			// TODO: individual string connected state?
 			strings[fmt.Sprintf("A%s", idx)] = PvacString{
 				Current:   inv.PVACLogging.PVACPVCurrentA,
 				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageA,
 				State:     inv.PVACStatus.PVACState,
-				Connected: !inv.PVACLogging.IsMIA,
+				Connected: app.powerwall.Controller.EsCan.Bus.Pvs[id].PVSStatus.PVSStringAConnected,
 			}
 			strings[fmt.Sprintf("B%s", idx)] = PvacString{
 				Current:   inv.PVACLogging.PVACPVCurrentB,
 				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageB,
 				State:     inv.PVACStatus.PVACState,
-				Connected: !inv.PVACLogging.IsMIA,
+				Connected: app.powerwall.Controller.EsCan.Bus.Pvs[id].PVSStatus.PVSStringBConnected,
 			}
 			strings[fmt.Sprintf("C%s", idx)] = PvacString{
 				Current:   inv.PVACLogging.PVACPVCurrentC,
 				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageC,
 				State:     inv.PVACStatus.PVACState,
-				Connected: !inv.PVACLogging.IsMIA,
+				Connected: app.powerwall.Controller.EsCan.Bus.Pvs[id].PVSStatus.PVSStringCConnected,
 			}
 			strings[fmt.Sprintf("D%s", idx)] = PvacString{
 				Current:   inv.PVACLogging.PVACPVCurrentD,
 				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageD,
 				State:     inv.PVACStatus.PVACState,
-				Connected: !inv.PVACLogging.IsMIA,
+				Connected: app.powerwall.Controller.EsCan.Bus.Pvs[id].PVSStatus.PVSStringDConnected,
 			}
 		}
 	}
