@@ -38,7 +38,7 @@ jobs:
           context: .
           build-args: |
             "BUILD_VERSION=${{ steps.meta.outputs.version }}"
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

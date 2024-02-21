@@ -8,7 +8,6 @@ func (app *Api) debugConfig(c *gin.Context) {
 	if app.forceRefresh || c.Query("refresh") == "true" {
 		app.powerwall.UpdateConfig()
 	}
-	c
 	c.JSON(200, app.powerwall.Config)
 }
 
