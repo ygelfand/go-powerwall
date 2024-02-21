@@ -19,7 +19,7 @@ func newDebugCmd(opts *powerwallOptions) *cobra.Command {
 			pwr := powerwall.NewPowerwallGateway(opts.endpoint, opts.password)
 			debug := pwr.RunQuery("DeviceControllerQuery", nil)
 			var prettyJSON bytes.Buffer
-			debug = pwr.RunQuery("ComponentsQuery", nil)
+			//debug = pwr.RunQuery("ComponentsQuery", nil)
 			err := json.Indent(&prettyJSON, []byte(*debug), "", "\t")
 			if err != nil {
 				fmt.Println("JSON parse error: ", err)

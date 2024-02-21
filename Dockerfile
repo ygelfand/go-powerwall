@@ -11,7 +11,8 @@ RUN go mod download
 COPY main.go main.go
 COPY internal/ internal/
 COPY cmd/ cmd/
-RUN CGO_ENABLED=0 go build -ldflags="-w -s"  -o go-powerwall main.go
+ARG BUILD_VERSION
+RUN CGO_ENABLED=0 go build -ldflags="-w -s -X github.com/ygelfand/go-powerwall/cmd.debugMode=false -X github.com/ygelfand/go-powerwall/cmd.GoPowerwallVersion=${BUILD_VERSION}"  -o go-powerwall main.go
 
 FROM scratch
 COPY --from=builder /workspace/go-powerwall /go-powerwall

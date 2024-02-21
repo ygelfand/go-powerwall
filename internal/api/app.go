@@ -17,8 +17,9 @@ func NewApi(p *powerwall.PowerwallGateway, forceRefresh bool) *Api {
 }
 
 func (api *Api) Run(listen string) {
-
+	gin.LoggerWithWriter
 	router := gin.Default()
+	router.SetTrustedProxies(nil)
 	base := router.Group("/api")
 	{
 		v1 := base.Group("/v1")
