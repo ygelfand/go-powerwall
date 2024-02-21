@@ -27,6 +27,7 @@ func newProxyCmd(opts *powerwallOptions) *cobra.Command {
 			if !o.debugMode {
 				gin.SetMode(gin.ReleaseMode)
 			}
+			gin.ForceConsoleColor()
 			app := api.NewApi(pwr, o.onDemand)
 			if !o.onDemand {
 				go pwr.PeriodicRefresh(time.Duration(o.refreshInterval) * time.Second)

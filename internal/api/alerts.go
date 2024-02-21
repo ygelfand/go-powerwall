@@ -25,7 +25,7 @@ func (app *Api) parsedAlerts() map[string]int {
 		alerts = append(alerts, inv.Alerts.Active...)
 	}
 	for _, v := range alerts {
-		alertMap[v] = 1
+		alertMap[v]++
 	}
 	return alertMap
 }
