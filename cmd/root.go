@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -31,7 +30,6 @@ func Execute() {
 }
 
 func init() {
-	log.Println(debugMode)
 	viper.SetEnvPrefix("POWERWALL")
 	viper.SetDefault("ENDPOINT", "https://192.168.91.1/tedapi")
 	viper.BindEnv("PASSWORD")

@@ -11,26 +11,39 @@ func (app *Api) strings(c *gin.Context) {
 	c.JSON(200, app.parsedStrings())
 }
 
-func (app *Api) parsedStrings() map[string]interface{} {
-	strings := map[string]interface{}{}
+func (app *Api) parsedStrings() map[string]PvacString {
+	strings := map[string]PvacString{}
 	if app.powerwall.Controller == nil {
 		return strings
 	}
 	for id, inv := range app.powerwall.Controller.EsCan.Bus.Pvac {
 		if !inv.PVACStatus.IsMIA {
 			idx := pvacIndex(id)
-			strings[fmt.Sprintf("A%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentA
-			strings[fmt.Sprintf("B%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentB
-			strings[fmt.Sprintf("C%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentC
-			strings[fmt.Sprintf("D%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentD
-			strings[fmt.Sprintf("A%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageA
-			strings[fmt.Sprintf("B%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageB
-			strings[fmt.Sprintf("C%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageC
-			strings[fmt.Sprintf("D%s_Voltage", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageD
-			strings[fmt.Sprintf("A%s_Power", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageA * inv.PVACLogging.PVACPVCurrentA
-			strings[fmt.Sprintf("B%s_Power", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageB * inv.PVACLogging.PVACPVCurrentB
-			strings[fmt.Sprintf("C%s_Power", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageC * inv.PVACLogging.PVACPVCurrentC
-			strings[fmt.Sprintf("D%s_Power", idx)] = inv.PVACLogging.PVACPVMeasuredVoltageD * inv.PVACLogging.PVACPVCurrentD
+			// TODO: individual string connected state?
+			strings[fmt.Sprintf("A%s", idx)] = PvacString{
+				Current:   inv.PVACLogging.PVACPVCurrentA,
+				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageA,
+				State:     inv.PVACStatus.PVACState,
+				Connected: !inv.PVACLogging.IsMIA,
+			}
+			strings[fmt.Sprintf("B%s", idx)] = PvacString{
+				Current:   inv.PVACLogging.PVACPVCurrentB,
+				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageB,
+				State:     inv.PVACStatus.PVACState,
+				Connected: !inv.PVACLogging.IsMIA,
+			}
+			strings[fmt.Sprintf("C%s", idx)] = PvacString{
+				Current:   inv.PVACLogging.PVACPVCurrentC,
+				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageC,
+				State:     inv.PVACStatus.PVACState,
+				Connected: !inv.PVACLogging.IsMIA,
+			}
+			strings[fmt.Sprintf("D%s", idx)] = PvacString{
+				Current:   inv.PVACLogging.PVACPVCurrentD,
+				Voltage:   inv.PVACLogging.PVACPVMeasuredVoltageD,
+				State:     inv.PVACStatus.PVACState,
+				Connected: !inv.PVACLogging.IsMIA,
+			}
 		}
 	}
 	return strings
