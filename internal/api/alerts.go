@@ -1,8 +1,6 @@
 package api
 
 import (
-	"slices"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,11 +8,12 @@ func (app *Api) alerts(c *gin.Context) {
 	c.JSON(200, app.parsedAlerts())
 }
 
-func (app *Api) parsedAlerts() []string {
-	alerts := []string{}
+func (app *Api) parsedAlerts() map[string]int {
+	alertMap := map[string]int{}
 	if app.powerwall.Controller == nil {
-		return alerts
+		return alertMap
 	}
+	alerts := []string{}
 	alerts = append(alerts, app.powerwall.Controller.Control.Alerts.Active...)
 	for _, inv := range app.powerwall.Controller.EsCan.Bus.Pinv {
 		alerts = append(alerts, inv.Alerts.Active...)
@@ -25,6 +24,8 @@ func (app *Api) parsedAlerts() []string {
 	for _, inv := range app.powerwall.Controller.EsCan.Bus.Pvs {
 		alerts = append(alerts, inv.Alerts.Active...)
 	}
-	slices.Sort(alerts)
-	return slices.Compact(alerts)
+	for _, v := range alerts {
+		alertMap[v] = 1
+	}
+	return alertMap
 }
