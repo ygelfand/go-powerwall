@@ -5,19 +5,18 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/ygelfand/go-powerwall/internal/powerwall"
 )
 
 func (app *Api) strings(c *gin.Context) {
-	c.JSON(200, parseStrings(app.powerwall.Controller))
+	c.JSON(200, app.parsedStrings())
 }
 
-func parseStrings(c *powerwall.DeviceControllerResponse) map[string]interface{} {
+func (app *Api) parsedStrings() map[string]interface{} {
 	strings := map[string]interface{}{}
-	if c == nil {
+	if app.powerwall.Controller == nil {
 		return strings
 	}
-	for id, inv := range c.EsCan.Bus.Pvac {
+	for id, inv := range app.powerwall.Controller.EsCan.Bus.Pvac {
 		if !inv.PVACStatus.IsMIA {
 			idx := pvacIndex(id)
 			strings[fmt.Sprintf("A%s_Current", idx)] = inv.PVACLogging.PVACPVCurrentA

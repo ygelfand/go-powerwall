@@ -24,6 +24,7 @@ func (api *Api) Run(listen string) {
 		v1 := base.Group("/v1")
 		{
 			v1.GET("/strings", api.strings)
+			v1.GET("/alerts", api.alerts)
 			debug := v1.Group("/debug")
 			{
 				debug.GET("/config", api.debugConfig)

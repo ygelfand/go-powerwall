@@ -141,9 +141,9 @@ type DeviceControllerResponse struct {
 					IsMIA     bool    `json:"isMIA,omitempty"`
 				} `json:"PVAC_Status,omitempty"`
 				Alerts struct {
-					Active     []any `json:"active,omitempty"`
-					IsComplete bool  `json:"isComplete,omitempty"`
-					IsMIA      bool  `json:"isMIA,omitempty"`
+					Active     []string `json:"active,omitempty"`
+					IsComplete bool     `json:"isComplete,omitempty"`
+					IsMIA      bool     `json:"isMIA,omitempty"`
 				} `json:"alerts,omitempty"`
 				PackagePartNumber      string `json:"packagePartNumber,omitempty"`
 				PackageSerialNumber    string `json:"packageSerialNumber,omitempty"`
