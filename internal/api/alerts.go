@@ -7,7 +7,7 @@ import (
 )
 
 func (app *Api) alerts(c *gin.Context) {
-	c.JSON(200, gin.H{"alerts": app.parsedAlerts()})
+	c.JSON(200, app.parsedAlerts())
 }
 
 func (app *Api) parsedAlerts() []string {
