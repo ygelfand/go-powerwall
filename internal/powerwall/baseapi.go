@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"time"
 )
@@ -86,7 +85,6 @@ func (p *PowerwallGateway) refreshAuthToken() error {
 	if err != nil {
 		return err
 	}
-	log.Println(loginResp)
 	p.authToken = loginResp.Token
 	return nil
 }
