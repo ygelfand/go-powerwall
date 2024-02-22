@@ -32,8 +32,8 @@ func (api *Api) Run(listen string) {
 		{
 			v1.GET("/strings", api.withForcedRefresh(api.powerwall.UpdateController), api.strings)
 			v1.GET("/alerts", api.withForcedRefresh(api.powerwall.UpdateController), api.alerts)
-			v1.GET("/aggregates", api.withCache(), api.powerwall.JsonReverseProxy("GET", "meters/aggregates", nil))
-			v1.GET("/soe", api.withCache(), api.powerwall.JsonReverseProxy("GET", "system_status/soe", nil))
+			v1.GET("/aggregates", api.withCache(), api.powerwall.JSONReverseProxy("GET", "meters/aggregates", nil))
+			v1.GET("/soe", api.withCache(), api.powerwall.JSONReverseProxy("GET", "system_status/soe", nil))
 			debug := v1.Group("/debug")
 			{
 				debug.GET("/config", api.withForcedRefresh(api.powerwall.UpdateConfig), api.debugConfig)

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (p *PowerwallGateway) makeApiRequest(method, path string, body io.Reader) ([]byte, error) {
+func (p *PowerwallGateway) makeAPIRequest(method, path string, body io.Reader) ([]byte, error) {
 	req, err := http.NewRequest(method, p.endpoint.JoinPath("api", path).String(), body)
 	if err != nil {
 		return nil, err
@@ -28,9 +28,8 @@ func (p *PowerwallGateway) makeApiRequest(method, path string, body io.Reader) (
 			if err != nil {
 				// auth failed
 				return stop{err}
-			} else {
-				return errors.New("retrying with auth")
 			}
+			return errors.New("retrying with auth")
 		}
 
 		req.Header.Set("Content-type", "application/json")
@@ -40,9 +39,8 @@ func (p *PowerwallGateway) makeApiRequest(method, path string, body io.Reader) (
 			if err != nil {
 				// auth failed
 				return stop{err}
-			} else {
-				return errors.New("retrying with auth")
 			}
+			return errors.New("retrying with auth")
 
 		}
 		if err != nil {
