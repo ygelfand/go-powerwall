@@ -2,13 +2,15 @@ package powerwall
 
 import (
 	"net/http"
+	"net/url"
 
 	"golang.org/x/sync/semaphore"
 )
 
 type PowerwallGateway struct {
-	endpoint   string
+	endpoint   *url.URL
 	password   string
+	authToken  string
 	httpClient *http.Client
 	Din        string
 	refreshSem *semaphore.Weighted
@@ -50,4 +52,14 @@ type PvString struct {
 	Power     float32
 	Connected bool
 	Mia       bool
+}
+
+type loginResponse struct {
+	Email     string   `json:"email"`
+	FirstName string   `json:"firstname"`
+	LastName  string   `json:"lastname"`
+	Roles     []string `json:"roles"`
+	Token     string   `json:"token"`
+	Provider  string   `json:"provider"`
+	LoginTime string   `json:"loginTime"`
 }

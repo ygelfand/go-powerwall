@@ -18,7 +18,7 @@ go-powerwall proxy [flags]
 
 ### Global Flags
 Global flags can be set using environment variables starting with `POWERWALL_`, e.g `POWERWALL_PASSWORD`
-- `-e, --endpoint string`: Specifies the Powerwall endpoint URL. Default is `https://192.168.91.1/tedapi`.
+- `-e, --endpoint string`: Specifies the Powerwall endpoint URL. Default is `https://192.168.91.1/`.
 - `-p, --password string`: Specifies the Powerwall installer password.
 
 ## Examples

@@ -31,7 +31,7 @@ func Execute() {
 
 func init() {
 	viper.SetEnvPrefix("POWERWALL")
-	viper.SetDefault("ENDPOINT", "https://192.168.91.1/tedapi")
+	viper.SetDefault("ENDPOINT", "https://192.168.91.1/")
 	viper.BindEnv("PASSWORD")
 	viper.BindEnv("ENDPOINT")
 	o := &powerwallOptions{debugMode: debugMode == "true"}

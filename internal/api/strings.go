@@ -8,6 +8,7 @@ import (
 )
 
 func (app *Api) strings(c *gin.Context) {
+
 	c.JSON(200, app.parsedStrings())
 }
 

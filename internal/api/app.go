@@ -25,6 +25,8 @@ func (api *Api) Run(listen string) {
 		{
 			v1.GET("/strings", api.strings)
 			v1.GET("/alerts", api.alerts)
+			v1.GET("/aggregates", api.powerwall.JsonReverseProxy("GET", "meters/aggregates", nil))
+			v1.GET("/soe", api.powerwall.JsonReverseProxy("GET", "system_status/soe", nil))
 			debug := v1.Group("/debug")
 			{
 				debug.GET("/config", api.debugConfig)
