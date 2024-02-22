@@ -13,12 +13,12 @@ func (p *PowerwallGateway) Refresh(force bool) {
 		}
 		defer p.refreshSem.Release(1)
 	}
-	log.Println("Refreshing state")
 	p.UpdateController()
 	p.UpdateConfig()
 }
 
 func (p *PowerwallGateway) UpdateController() {
+	log.Println("Refreshing Controller")
 	res := p.RunQuery("DeviceControllerQuery", nil)
 	if res != nil {
 		err := json.Unmarshal([]byte(*res), &p.Controller)
@@ -29,6 +29,7 @@ func (p *PowerwallGateway) UpdateController() {
 }
 
 func (p *PowerwallGateway) UpdateConfig() {
+	log.Println("Refreshing Config")
 	res := p.GetConfig()
 	if res != nil {
 		err := json.Unmarshal([]byte(*res), &p.Config)
