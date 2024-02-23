@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
 )
@@ -61,7 +61,7 @@ func (p *PowerwallGateway) makeAPIRequest(method, path string, body io.Reader) (
 }
 
 func (p *PowerwallGateway) refreshAuthToken() error {
-	fmt.Println("Refreshing auth token")
+	log.Println("Refreshing auth token")
 	auth := map[string]string{"username": "customer", "password": p.password[len(p.password)-5:]}
 	jsonAuth, _ := json.Marshal(auth)
 	req, err := http.NewRequest("POST", p.endpoint.JoinPath("api/login/Basic").String(), bytes.NewBuffer(jsonAuth))

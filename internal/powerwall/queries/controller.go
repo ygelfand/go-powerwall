@@ -1,5 +1,7 @@
 package queries
 
+import "golang.org/x/exp/maps"
+
 var querySet = map[string]*SignedQuery{}
 
 func init() {
@@ -12,4 +14,8 @@ func addQuery(dq *SignedQuery) {
 }
 func GetQuery(name string) *SignedQuery {
 	return querySet[name]
+}
+
+func QueryList() []string {
+	return maps.Keys(querySet)
 }
