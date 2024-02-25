@@ -9,7 +9,7 @@ import (
 
 func (p *PowerwallGateway) JSONReverseProxy(method string, path string, body io.Reader) gin.HandlerFunc {
 	fn := func(c *gin.Context) {
-		resp, err := p.makeAPIRequest(method, path, body)
+		resp, err := p.MakeAPIRequest(method, path, body)
 		if err != nil {
 			log.Println(err)
 		}

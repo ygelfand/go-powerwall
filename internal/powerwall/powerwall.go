@@ -22,7 +22,6 @@ func NewPowerwallGateway(endpoint string, password string) *PowerwallGateway {
 	pwr.httpClient = pwr.getClient()
 	pwr.Din = *pwr.getDin()
 	pwr.refreshSem = semaphore.NewWeighted(1)
-	pwr.refreshAuthToken()
 	return pwr
 }
 

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (p *PowerwallGateway) makeAPIRequest(method, path string, body io.Reader) ([]byte, error) {
+func (p *PowerwallGateway) MakeAPIRequest(method, path string, body io.Reader) ([]byte, error) {
 	req, err := http.NewRequest(method, p.endpoint.JoinPath("api", path).String(), body)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,6 @@ func (p *PowerwallGateway) makeAPIRequest(method, path string, body io.Reader) (
 				return stop{err}
 			}
 			return errors.New("retrying with auth")
-
 		}
 		if err != nil {
 			return err
@@ -78,6 +77,9 @@ func (p *PowerwallGateway) refreshAuthToken() error {
 	if err != nil {
 		return err
 	}
+	if resp.StatusCode == 429 {
+		return stop{errors.New("Api throttled")}
+	}
 	loginResp := &loginResponse{}
 	err = json.Unmarshal(respbody, loginResp)
 	if err != nil {
@@ -85,23 +87,4 @@ func (p *PowerwallGateway) refreshAuthToken() error {
 	}
 	p.authToken = loginResp.Token
 	return nil
-}
-
-func retry(attempts int, sleep time.Duration, fn func() error) error {
-	if err := fn(); err != nil {
-		if s, ok := err.(stop); ok {
-			return s.error
-		}
-
-		if attempts--; attempts > 0 {
-			time.Sleep(sleep)
-			return retry(attempts, sleep, fn)
-		}
-		return err
-	}
-	return nil
-}
-
-type stop struct {
-	error
 }

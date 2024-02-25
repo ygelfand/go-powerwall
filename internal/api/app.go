@@ -30,8 +30,9 @@ func (api *Api) Run(listen string) {
 	{
 		v1 := base.Group("/v1")
 		{
-			v1.GET("/strings", api.withForcedRefresh(api.powerwall.UpdateController), api.strings)
-			v1.GET("/alerts", api.withForcedRefresh(api.powerwall.UpdateController), api.alerts)
+			v1.GET("/strings", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.strings)
+			v1.GET("/alerts", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.alerts)
+			v1.GET("/freq", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.voltage)
 			v1.GET("/aggregates", api.withCache(), api.powerwall.JSONReverseProxy("GET", "meters/aggregates", nil))
 			v1.GET("/soe", api.withCache(), api.powerwall.JSONReverseProxy("GET", "system_status/soe", nil))
 			debug := v1.Group("/debug")
