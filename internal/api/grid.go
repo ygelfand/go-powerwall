@@ -15,19 +15,20 @@ var gridmap = map[string]int{
 	"SystemWaitForUser":        0,
 }
 
-func (app *Api) parsedGridStatus() int {
+func (app *Api) parsedGridStatus() *int {
 	status, err := app.powerwall.MakeAPIRequest("GET", "system_status/grid_status", nil)
 	if err != nil {
 		log.Printf("Failed to get grid status: %s", err)
-		return 0
+		return nil
 	}
 	statusResp := &gridResponse{}
 	err = json.Unmarshal(status, statusResp)
 	if err != nil {
 		log.Printf("Failed to parse grid status: %s", err)
-		return 0
+		return nil
 	}
-	return gridmap[statusResp.GridStatus]
+	res := gridmap[statusResp.GridStatus]
+	return &res
 }
 
 type gridResponse struct {

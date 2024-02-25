@@ -24,13 +24,13 @@ func (app *Api) parsedVoltage() map[string]interface{} {
 				POut:        inv.PINVStatus.PINVPout,
 				VOut:        inv.PINVStatus.PINVVout,
 				FOut:        inv.PINVStatus.PINVFout,
+				// TODO: maybe calc?
 				//QOut: ??
 				//IOut: ??
 			}
 		}
 	}
-	msa := app.powerwall.Controller.EsCan.Bus.Msa
-	if !msa.METERZAcMeasurements.IsMIA {
+	if msa := app.powerwall.Controller.EsCan.Bus.Msa; !msa.METERZAcMeasurements.IsMIA {
 		powerDevs["MSA"] = msaPower{
 			PINVVSplit1: msa.METERZAcMeasurements.MeterZVl1G,
 			PINVVSplit2: msa.METERZAcMeasurements.MeterZVl2G,
@@ -40,8 +40,7 @@ func (app *Api) parsedVoltage() map[string]interface{} {
 			PINVPSplit2: msa.METERZAcMeasurements.METERZCTBInstRealPower,
 		}
 	}
-	island := app.powerwall.Controller.EsCan.Bus.Islander.ISLANDAcMeasurements
-	if !island.IsMIA {
+	if island := app.powerwall.Controller.EsCan.Bus.Islander.ISLANDAcMeasurements; !island.IsMIA {
 		powerDevs["ISLAND"] = islandPower{
 			FreqL1Load: island.ISLANDFreqL1Load,
 			FreqL1Main: island.ISLANDFreqL1Main,
@@ -58,6 +57,8 @@ func (app *Api) parsedVoltage() map[string]interface{} {
 			VL3NMain:   island.ISLANDVL3NMain,
 		}
 	}
-	powerDevs["grid_status"] = app.parsedGridStatus()
+	if status := app.parsedGridStatus(); status != nil {
+		powerDevs["grid_status"] = status
+	}
 	return powerDevs
 }
