@@ -11,4 +11,5 @@ type ProxyOptions struct {
 	RefreshInterval uint32
 	OnDemand        bool
 	ListenOn        string
+	FullProxy       bool
 }

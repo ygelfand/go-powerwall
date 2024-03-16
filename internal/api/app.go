@@ -1,6 +1,7 @@
 package api
 
 import (
+	"net/http/httputil"
 	"time"
 
 	"github.com/chenyahui/gin-cache/persist"
@@ -13,6 +14,7 @@ type Api struct {
 	forceRefresh bool
 	cacheStore   persist.CacheStore
 	expire       time.Duration
+	proxy        *httputil.ReverseProxy
 }
 
 func NewApi(p *powerwall.PowerwallGateway, forceRefresh bool) *Api {
@@ -20,6 +22,7 @@ func NewApi(p *powerwall.PowerwallGateway, forceRefresh bool) *Api {
 		forceRefresh: forceRefresh,
 		cacheStore:   persist.NewMemoryStore(10 * time.Minute),
 		expire:       60 * time.Second,
+		proxy:        newProxy(p),
 	}
 }
 
@@ -37,6 +40,7 @@ func (api *Api) Run(listen string) {
 			v1.GET("/pod", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.pods)
 			v1.GET("/aggregates", api.withCache(), api.powerwall.JSONReverseProxy("GET", "meters/aggregates", nil))
 			v1.GET("/soe", api.withCache(), api.powerwall.JSONReverseProxy("GET", "system_status/soe", nil))
+			v1.GET("/status", api.withCache(), api.powerwall.JSONReverseProxy("GET", "status", nil))
 			debug := v1.Group("/debug")
 			{
 				debug.GET("/config", api.withForcedRefresh(api.powerwall.UpdateConfig), api.debugConfig)
@@ -44,5 +48,10 @@ func (api *Api) Run(listen string) {
 			}
 		}
 	}
+
+	router.GET("/", api.withCache(), api.proxyRequest, api.justWidget)
+
+	router.NoRoute(api.proxyRequest)
+	router.NoMethod(api.proxyRequest)
 	router.Run(listen)
 }

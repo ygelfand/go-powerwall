@@ -134,7 +134,7 @@ func (p *PowerwallGateway) getDin() *string {
 }
 
 func (p *PowerwallGateway) makeTedRequest(method, path string, body io.Reader) ([]byte, error) {
-	req, err := http.NewRequest(method, p.endpoint.JoinPath("tedapi", path).String(), body)
+	req, err := http.NewRequest(method, p.Endpoint.JoinPath("tedapi", path).String(), body)
 	if err != nil {
 		return nil, err
 	}

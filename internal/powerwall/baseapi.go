@@ -11,7 +11,7 @@ import (
 )
 
 func (p *PowerwallGateway) MakeAPIRequest(method, path string, body io.Reader) ([]byte, error) {
-	req, err := http.NewRequest(method, p.endpoint.JoinPath("api", path).String(), body)
+	req, err := http.NewRequest(method, p.Endpoint.JoinPath("api", path).String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -59,11 +59,32 @@ func (p *PowerwallGateway) MakeAPIRequest(method, path string, body io.Reader) (
 	return respbody, nil
 }
 
+func (p *PowerwallGateway) GetAuthHeaders() []*http.Cookie {
+	if p.authToken == "" {
+		p.refreshAuthToken()
+	}
+	return []*http.Cookie{
+		&http.Cookie{
+			Name:  "AuthCookie",
+			Value: p.authToken,
+			Path:  "/",
+		},
+		&http.Cookie{
+			Name:  "UserRecord",
+			Value: p.userRecord,
+			Path:  "/",
+		}}
+}
 func (p *PowerwallGateway) refreshAuthToken() error {
+	if !p.authSem.TryAcquire(1) {
+		log.Println("auth refresh skipped")
+		return errors.New("auth already in progress")
+	}
+	defer p.authSem.Release(1)
 	log.Println("Refreshing auth token")
-	auth := map[string]string{"username": "customer", "password": p.password[len(p.password)-5:]}
+	auth := map[string]string{"username": "customer", "email": "foo@example.test", "password": p.password[len(p.password)-5:]}
 	jsonAuth, _ := json.Marshal(auth)
-	req, err := http.NewRequest("POST", p.endpoint.JoinPath("api/login/Basic").String(), bytes.NewBuffer(jsonAuth))
+	req, err := http.NewRequest("POST", p.Endpoint.JoinPath("api/login/Basic").String(), bytes.NewBuffer(jsonAuth))
 	if err != nil {
 		return err
 	}
@@ -86,5 +107,10 @@ func (p *PowerwallGateway) refreshAuthToken() error {
 		return err
 	}
 	p.authToken = loginResp.Token
+	for _, c := range resp.Cookies() {
+		if c.Name == "UserRecord" {
+			p.userRecord = c.Value
+		}
+	}
 	return nil
 }

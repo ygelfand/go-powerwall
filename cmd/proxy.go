@@ -30,6 +30,7 @@ func newProxyCmd(opts *options.PowerwallOptions) *cobra.Command {
 		},
 	}
 	proxyCmd.Flags().BoolVarP(&o.OnDemand, "ondemand", "o", false, "disable periodic refresh")
+	proxyCmd.Flags().BoolVarP(&o.OnDemand, "full", "f", true, "start full authenticated portal proxy")
 	proxyCmd.Flags().StringVarP(&o.ListenOn, "listen", "l", ":8080", "host:port to listen on")
 	proxyCmd.Flags().Uint32VarP(&o.RefreshInterval, "refresh", "r", 30, "periodic refresh frequency in seconds")
 	return proxyCmd

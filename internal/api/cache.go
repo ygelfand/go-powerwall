@@ -9,7 +9,7 @@ func (app *Api) withCache() gin.HandlerFunc {
 	return cache.Cache(app.cacheStore, app.expire, cache.WithCacheStrategyByRequest(func(c *gin.Context) (bool, cache.Strategy) {
 		refresh := c.Query("refresh") == "true"
 		return !refresh, cache.Strategy{
-			CacheKey: c.Request.URL.Path,
+			CacheKey: c.Request.RequestURI,
 		}
 	}))
 }

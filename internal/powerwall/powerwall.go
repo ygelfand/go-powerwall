@@ -16,12 +16,13 @@ func NewPowerwallGateway(endpoint string, password string) *PowerwallGateway {
 	}
 	pwr := &PowerwallGateway{
 		password: password,
-		endpoint: url,
+		Endpoint: url,
 	}
 
 	pwr.httpClient = pwr.getClient()
 	pwr.Din = *pwr.getDin()
 	pwr.refreshSem = semaphore.NewWeighted(1)
+	pwr.authSem = semaphore.NewWeighted(1)
 	return pwr
 }
 

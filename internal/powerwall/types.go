@@ -8,12 +8,14 @@ import (
 )
 
 type PowerwallGateway struct {
-	endpoint   *url.URL
+	Endpoint   *url.URL
 	password   string
 	authToken  string
+	userRecord string
 	httpClient *http.Client
 	Din        string
 	refreshSem *semaphore.Weighted
+	authSem    *semaphore.Weighted
 	Config     *ConfigResponse
 	Controller *DeviceControllerResponse
 }
