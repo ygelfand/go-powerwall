@@ -2,7 +2,7 @@ package queries
 
 var DeviceControllerQuery = &SignedQuery{
 	Name:      "DeviceControllerQuery",
-	Signature: "MIGGAkEUsZelf621utFyGqi9asUYmDC2EkKitHBPshR2ZLfOGgz+0lYBDH8q9uXbZ18vYAsWlV9xYxMk0455vn7dQTESeAJBcAdftB9dxD7y7gWlVsF/KgjHDqZdH4Ki60l+2s8R3gYbcc/JtM38HvVzupWNI28hzXrr5XqW9eEMta5y+8svFx8=",
+	Signature: "MIGHAkFhIAr/5yFIg+wd+3vw2IPPY0YTWwejvUUPtLBEe2PK5CRAPyZ1dCJDf1bksH9IzXyvOT0X3SvWoiRPgeiJcJzzfgJCAV+y+y1eFCSX44chSQfxjpcmjQNx56nP0XznyvLSVthDHslSljC89yA9srmaDtvUcs/mZRYLIbD+UQFoxEoAO6uf",
 	Query: ` query DeviceControllerQuery {
   control {
     systemStatus {
@@ -37,6 +37,12 @@ var DeviceControllerQuery = &SignedQuery{
   }
   system {
     time
+    supportMode {
+      remoteService {
+        isEnabled
+        expiryTime
+      }
+    }
     sitemanagerStatus {
       isRunning
     }
@@ -67,6 +73,7 @@ var DeviceControllerQuery = &SignedQuery{
       status
       errors
       macAddress
+      hostname
       isWired
       modbusPort
       modbusId
@@ -156,6 +163,10 @@ var DeviceControllerQuery = &SignedQuery{
           PVS_StringC_Connected
           PVS_StringD_Connected
           PVS_SelfTestState
+        }
+        PVS_Logging {
+          PVS_numStringsLockoutBits
+          PVS_sbsComplete
         }
         alerts {
           isComplete
