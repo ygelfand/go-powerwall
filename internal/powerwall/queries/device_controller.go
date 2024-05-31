@@ -2,7 +2,7 @@ package queries
 
 var DeviceControllerQuery = &SignedQuery{
 	Name:      "DeviceControllerQuery",
-	Signature: "MIGHAkFhIAr/5yFIg+wd+3vw2IPPY0YTWwejvUUPtLBEe2PK5CRAPyZ1dCJDf1bksH9IzXyvOT0X3SvWoiRPgeiJcJzzfgJCAV+y+y1eFCSX44chSQfxjpcmjQNx56nP0XznyvLSVthDHslSljC89yA9srmaDtvUcs/mZRYLIbD+UQFoxEoAO6uf",
+	Signature: "MIGHAkIBlHJ++stgIqaruiXRFbni9KM+Gofpc/b/NFo9SkuuSgjR5cyUYEQ2A9AoZbq7Ps6kg5HCFKJZbtgRP/ph72vL1XYCQUh/5IdFZDYhmeFGs42AIE2hK+5KDhwLLWE98qD2u8z4jdRF6AYHwGpR08B9a4gO1cpOFGmBFrQ/M9BDrG2HrpG4",
 	Query: ` query DeviceControllerQuery {
   control {
     systemStatus {
@@ -58,6 +58,7 @@ var DeviceControllerQuery = &SignedQuery{
   neurio {
     isDetectingWiredMeters
     readings {
+      firmwareVersion
       serial
       dataRead {
         voltageV
@@ -78,6 +79,30 @@ var DeviceControllerQuery = &SignedQuery{
       modbusPort
       modbusId
       lastUpdateTimestamp
+    }
+  }
+  teslaRemoteMeter {
+    meters {
+      din
+      reading {
+        timestamp
+        firmwareVersion
+        ctReadings {
+          voltageV
+          realPowerW
+          reactivePowerVAR
+          energyExportedWs
+          energyImportedWs
+          currentA
+        }
+      }
+      firmwareUpdate {
+        updating
+        numSteps
+        currentStep
+        currentStepProgress
+        progress
+      }
     }
   }
   pw3Can {
@@ -201,8 +226,9 @@ var DeviceControllerQuery = &SignedQuery{
         packageSerialNumber
         MSA_InfoMsg {
           isMIA
+          MSA_pcbaId
+          MSA_usageId
           MSA_appGitHash
-          MSA_assemblyId
         }
         METER_Z_AcMeasurements {
           isMIA
@@ -218,6 +244,12 @@ var DeviceControllerQuery = &SignedQuery{
         }
         MSA_Status {
           lastRxTime
+        }
+        MSA_Debug {
+          MSA_HeatingRateOccurred
+        }
+        alerts {
+          active
         }
       }
       SYNC {
