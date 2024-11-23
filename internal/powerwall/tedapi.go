@@ -50,7 +50,6 @@ func (p *PowerwallGateway) GetConfig() *string {
 		log.Println(err)
 		return nil
 	}
-
 	return &pr.Message.Config.GetRecv().File.Text
 }
 
@@ -94,7 +93,7 @@ func (p *PowerwallGateway) RunQuery(query string, params interface{}) *string {
 					Signature:     queries.GetQuery(query).Sig(),
 					Payload: &PayloadString{
 						Value: 1,
-						Text:  queries.GetQuery(query).Query,
+						Text:  queries.GetQuery(query).GetQuery(),
 					},
 					Body: &StringValue{
 						Value: reqbody,
@@ -108,6 +107,10 @@ func (p *PowerwallGateway) RunQuery(query string, params interface{}) *string {
 	}
 
 	body, err := proto.Marshal(pm)
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 	resp, err := p.makeTedRequest("POST", "v1", bytes.NewBuffer(body))
 	if err != nil {
 		log.Println(err)
@@ -118,6 +121,10 @@ func (p *PowerwallGateway) RunQuery(query string, params interface{}) *string {
 	err = proto.Unmarshal(resp, pr)
 	if err != nil {
 		log.Println(err)
+		return nil
+	}
+	if pr.Message.Payload == nil {
+		log.Printf("err: %v", pr)
 		return nil
 	}
 	return &pr.Message.Payload.Recv.Text

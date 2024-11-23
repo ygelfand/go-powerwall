@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/ygelfand/go-powerwall/cmd/options"
@@ -29,7 +28,8 @@ func NewDebugQueryCmd(opts *options.PowerwallOptions) *cobra.Command {
 			if err != nil {
 				fmt.Println("JSON parse error: ", err)
 			}
-			log.Println(string(prettyJSON.Bytes()))
+
+			fmt.Println(string(prettyJSON.Bytes()))
 		},
 	}
 	originalUsageFunc := queryCmd.UsageFunc()

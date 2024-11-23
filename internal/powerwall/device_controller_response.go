@@ -3,6 +3,22 @@ package powerwall
 import "time"
 
 type DeviceControllerResponse struct {
+	Components struct {
+		Msa []struct {
+			ActiveAlerts []struct {
+				Name string `json:"name,omitempty"`
+			} `json:"activeAlerts,omitempty"`
+			PartNumber   string `json:"partNumber,omitempty"`
+			SerialNumber string `json:"serialNumber,omitempty"`
+			Signals      []struct {
+				BoolValue any      `json:"boolValue"`
+				Name      string   `json:"name"`
+				TextValue any      `json:"textValue"`
+				Timestamp string   `json:"timestamp"`
+				Value     *float32 `json:"value"`
+			} `json:"signals"`
+		} `json:"msa,omitempty"`
+	} `json:"components,omitempty"`
 	Control struct {
 		Alerts struct {
 			Active []string `json:"active,omitempty"`
