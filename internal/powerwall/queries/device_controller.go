@@ -1,6 +1,6 @@
 package queries
 
-var DeviceControllerQuery = &SignedQuery{
+var deviceControllerQuery = &SignedQuery{
 	Name:      "DeviceControllerQuery",
 	Signature: "MIGHAkIBQZUS40LRyhrTAPZ9C0VAL5qfwA0GJawsDmohKQpk7+Y3i69i1/gmCy7BrNkhH9aD/2tJbfNcStjuaVRZ3n/FeFICQR1DA0j7OCKw5NYY3hHENbKpVkKmSo8InbqG8SBXzUqMAioFEst7PJvIZ8mdOYtSs4m48fEPDhZF7de/1SYpki4S",
 	DefaultParams: PointerTo(`{"msaComp":{"types" :["PVS","PVAC", "TESYNC", "TEPINV", "TETHC", "STSTSM",  "TEMSA", "TEPINV" ]},
@@ -10,6 +10,11 @@ var DeviceControllerQuery = &SignedQuery{
 	"MSA_appGitHash",
 	"MSA_HeatingRateOccurred",
 	"THC_AmbientTemp",
+  "MSA_HeatingRateLockoutEnabled",
+  "MSA_ExtPower_Status",
+  "PINV_ACStageFault",
+  "THC_State",
+  "THC_Logging",
 	"METER_Z_CTA_InstRealPower",
 	"METER_Z_CTA_InstReactivePower",
 	"METER_Z_CTA_I",

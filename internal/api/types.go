@@ -9,6 +9,11 @@ type PvacString struct {
 	State     string  `json:"State"`
 }
 
+type PvacFan struct {
+	ActualRpm int `json:"actual_rpm"`
+	TargetRpm int `json:"target_rpm"`
+}
+
 func (s PvacString) MarshalJSON() ([]byte, error) {
 	type rawPvacString PvacString
 	return json.Marshal(struct {

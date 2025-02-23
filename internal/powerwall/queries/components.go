@@ -1,6 +1,6 @@
 package queries
 
-var ComponentsQuery = &SignedQuery{
+var componentsQuery = &SignedQuery{
 	Name:      "ComponentsQuery",
 	Signature: "MIGHAkIA/m21eaB0flxf/YFl+8i1OqGoKIhYZwX8jvmgnbJ+QkMuXRHtNteCYhNtAia8XMmjQg/hf7Qib+iRfLUbxUYqp30CQWDhxwYf8dx96AtPr61tpToZuuxWhKVN7KcUHyg1kMv7WgctkVxualnLyohJKlvrhBTJadguQE3VykXq6/zvTuRK",
 	DefaultParams: PointerTo(`{"hvpComponentsFilter": {"types":["PW3HVP"]},

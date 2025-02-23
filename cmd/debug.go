@@ -15,5 +15,6 @@ func newDebugCmd(opts *options.PowerwallOptions) *cobra.Command {
 	}
 	debugCmd.AddCommand(debug.NewDebugQueryCmd(opts))
 	debugCmd.AddCommand(debug.NewDebugConfigCmd(opts))
+	debugCmd.AddCommand(debug.NewDebugValidateCmd(opts))
 	return debugCmd
 }

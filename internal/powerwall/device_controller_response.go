@@ -137,17 +137,19 @@ type DeviceControllerResponse struct {
 					PVACAppGitHash []int `json:"PVAC_appGitHash,omitempty"`
 				} `json:"PVAC_InfoMsg,omitempty"`
 				PVACLogging struct {
-					PVACPVCurrentA         float64 `json:"PVAC_PVCurrent_A,omitempty"`
-					PVACPVCurrentB         float64 `json:"PVAC_PVCurrent_B,omitempty"`
-					PVACPVCurrentC         float64 `json:"PVAC_PVCurrent_C,omitempty"`
-					PVACPVCurrentD         float64 `json:"PVAC_PVCurrent_D,omitempty"`
-					PVACPVMeasuredVoltageA float64 `json:"PVAC_PVMeasuredVoltage_A,omitempty"`
-					PVACPVMeasuredVoltageB float64 `json:"PVAC_PVMeasuredVoltage_B,omitempty"`
-					PVACPVMeasuredVoltageC float64 `json:"PVAC_PVMeasuredVoltage_C,omitempty"`
-					PVACPVMeasuredVoltageD float64 `json:"PVAC_PVMeasuredVoltage_D,omitempty"`
-					PVACVL1Ground          float64 `json:"PVAC_VL1Ground,omitempty"`
-					PVACVL2Ground          float64 `json:"PVAC_VL2Ground,omitempty"`
-					IsMIA                  bool    `json:"isMIA,omitempty"`
+					PVAC_Fan_Speed_Actual_RPM int     `json:"PVAC_Fan_Speed_Actual_RPM"`
+					PVAC_Fan_Speed_Target_RPM int     `json:"PVAC_Fan_Speed_Target_RPM"`
+					PVACPVCurrentA            float64 `json:"PVAC_PVCurrent_A,omitempty"`
+					PVACPVCurrentB            float64 `json:"PVAC_PVCurrent_B,omitempty"`
+					PVACPVCurrentC            float64 `json:"PVAC_PVCurrent_C,omitempty"`
+					PVACPVCurrentD            float64 `json:"PVAC_PVCurrent_D,omitempty"`
+					PVACPVMeasuredVoltageA    float64 `json:"PVAC_PVMeasuredVoltage_A,omitempty"`
+					PVACPVMeasuredVoltageB    float64 `json:"PVAC_PVMeasuredVoltage_B,omitempty"`
+					PVACPVMeasuredVoltageC    float64 `json:"PVAC_PVMeasuredVoltage_C,omitempty"`
+					PVACPVMeasuredVoltageD    float64 `json:"PVAC_PVMeasuredVoltage_D,omitempty"`
+					PVACVL1Ground             float64 `json:"PVAC_VL1Ground,omitempty"`
+					PVACVL2Ground             float64 `json:"PVAC_VL2Ground,omitempty"`
+					IsMIA                     bool    `json:"isMIA,omitempty"`
 				} `json:"PVAC_Logging,omitempty"`
 				PVACStatus struct {
 					PVACFout  float64 `json:"PVAC_Fout,omitempty"`

@@ -10,6 +10,14 @@ type SignedQuery struct {
 	QueryEncoded  string
 	Signature     string
 	DefaultParams *string
+	SigKey        int32
+}
+
+func (dq *SignedQuery) Key() int32 {
+	if dq.SigKey != 0 {
+		return dq.SigKey
+	}
+	return 1
 }
 
 func (dq *SignedQuery) Sig() []byte {

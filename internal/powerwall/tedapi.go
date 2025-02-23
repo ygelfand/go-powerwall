@@ -92,7 +92,7 @@ func (p *PowerwallGateway) RunQuery(query string, params interface{}) *string {
 					RequestFormat: Format_Json,
 					Signature:     queries.GetQuery(query).Sig(),
 					Payload: &PayloadString{
-						Value: 1,
+						Value: queries.GetQuery(query).Key(),
 						Text:  queries.GetQuery(query).GetQuery(),
 					},
 					Body: &StringValue{

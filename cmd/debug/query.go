@@ -13,8 +13,7 @@ import (
 
 // queryCmd represents the query command
 func NewDebugQueryCmd(opts *options.PowerwallOptions) *cobra.Command {
-
-	var queryCmd = &cobra.Command{
+	queryCmd := &cobra.Command{
 		Use:       "query [queryName]",
 		Short:     "run a saved query",
 		Long:      `Runs an available query for debug.`,

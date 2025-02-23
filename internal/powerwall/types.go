@@ -8,16 +8,17 @@ import (
 )
 
 type PowerwallGateway struct {
-	Endpoint   *url.URL
-	password   string
-	authToken  string
-	userRecord string
-	httpClient *http.Client
-	Din        string
-	refreshSem *semaphore.Weighted
-	authSem    *semaphore.Weighted
-	Config     *ConfigResponse
-	Controller *DeviceControllerResponse
+	Endpoint     *url.URL
+	password     string
+	authToken    string
+	userRecord   string
+	httpClient   *http.Client
+	Din          string
+	refreshSem   *semaphore.Weighted
+	authSem      *semaphore.Weighted
+	Config       *ConfigResponse
+	Controller   *DeviceControllerResponse
+	ControllerV2 *DeviceControllerResponse
 }
 
 type State struct {

@@ -18,7 +18,8 @@ type Api struct {
 }
 
 func NewApi(p *powerwall.PowerwallGateway, forceRefresh bool) *Api {
-	return &Api{powerwall: p,
+	return &Api{
+		powerwall:    p,
 		forceRefresh: forceRefresh,
 		cacheStore:   persist.NewMemoryStore(10 * time.Minute),
 		expire:       60 * time.Second,
@@ -34,6 +35,7 @@ func (api *Api) Run(listen string) {
 		v1 := base.Group("/v1")
 		{
 			v1.GET("/strings", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.strings)
+			v1.GET("/fans", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.fans)
 			v1.GET("/alerts", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.alerts)
 			v1.GET("/freq", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.voltage)
 			v1.GET("/temps", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.temps)
