@@ -3,10 +3,9 @@ name: ci
 on:
   push:
     branches:
-      - 'main'
-      - 'dev'
+      - "dev"
     tags:
-      - 'v*'
+      - "v*"
 jobs:
   docker:
     runs-on: ubuntu-latest
