@@ -31,7 +31,7 @@ func NewApi(p *powerwall.PowerwallGateway, forceRefresh bool) *Api {
 
 func timeoutMiddleware() gin.HandlerFunc {
 	return timeout.New(
-		timeout.WithTimeout(2000*time.Millisecond),
+		timeout.WithTimeout(5*time.Second),
 		timeout.WithHandler(func(c *gin.Context) {
 			c.Next()
 		}),
@@ -41,29 +41,38 @@ func timeoutMiddleware() gin.HandlerFunc {
 	)
 }
 
+func defaultMiddleware() gin.HandlersChain {
+	return gin.HandlersChain{
+		timeoutMiddleware(),
+	}
+}
+
 func (api *Api) Run(listen string) {
 	router := gin.Default()
-	router.Use(gin.Recovery())
-	router.Use(timeoutMiddleware())
+	router.Use(defaultMiddleware()...)
 	router.SetTrustedProxies(nil)
 	base := router.Group("/api")
 	{
-		v1 := base.Group("/v1")
+		v1 := base.Group("/v1", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh))
 		{
-			v1.GET("/strings", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.strings)
-			v1.GET("/fans", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.fans)
-			v1.GET("/alerts", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.alerts)
-			v1.GET("/freq", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.voltage)
-			v1.GET("/temps", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.temps)
-			v1.GET("/pod", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.pods)
-			v1.GET("/aggregates", api.withCache(), api.powerwall.JSONReverseProxy("GET", "meters/aggregates", nil))
-			v1.GET("/soe", api.withCache(), api.powerwall.JSONReverseProxy("GET", "system_status/soe", nil))
-			v1.GET("/status", api.withCache(), api.powerwall.JSONReverseProxy("GET", "status", nil))
-			debug := v1.Group("/debug")
-			{
-				debug.GET("/config", api.withForcedRefresh(api.powerwall.UpdateConfig), api.debugConfig)
-				debug.GET("/controller", api.withForcedRefresh(api.powerwall.TryRefresh), api.debugController)
-			}
+			v1.GET("/strings", api.strings)
+			v1.GET("/fans", api.fans)
+			v1.GET("/alerts", api.alerts)
+			v1.GET("/freq", api.voltage)
+			v1.GET("/temps", api.temps)
+			v1.GET("/pod", api.pods)
+		}
+		noRefresh := base.Group("/v1", api.withCache())
+		{
+			noRefresh.GET("/aggregates", api.powerwall.JSONReverseProxy("GET", "meters/aggregates", nil))
+			noRefresh.GET("/soe", api.powerwall.JSONReverseProxy("GET", "system_status/soe", nil))
+			noRefresh.GET("/status", api.powerwall.JSONReverseProxy("GET", "status", nil))
+		}
+		debug := router.Group("/debug")
+		{
+			debug.GET("/config", api.withForcedRefresh(api.powerwall.UpdateConfig), api.debugConfig)
+			debug.GET("/controller", api.withForcedRefresh(api.powerwall.UpdateController), api.debugController)
+			debug.GET("/controller2", api.withForcedRefresh(api.powerwall.UpdateControllerV2), api.debugControllerV2)
 		}
 	}
 

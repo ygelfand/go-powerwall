@@ -11,3 +11,7 @@ func (app *Api) debugConfig(c *gin.Context) {
 func (app *Api) debugController(c *gin.Context) {
 	c.JSON(200, app.powerwall.Controller)
 }
+
+func (app *Api) debugControllerV2(c *gin.Context) {
+	c.JSON(200, app.powerwall.ControllerV2)
+}

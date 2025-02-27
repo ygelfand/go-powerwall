@@ -25,7 +25,7 @@ func (p *PowerwallGateway) Refresh(force bool) {
 		return
 	}
 	p.UpdateController()
-	p.UpdateConfig()
+	p.UpdateControllerV2()
 }
 
 func (p *PowerwallGateway) TryRefresh() {
@@ -41,6 +41,9 @@ func (p *PowerwallGateway) UpdateController() {
 			log.Println(err)
 		}
 	}
+}
+
+func (p *PowerwallGateway) UpdateControllerV2() {
 	log.Println("Refreshing Controller V2")
 	res = p.RunQuery("DeviceControllerQueryV2", nil)
 	if res != nil {
@@ -49,7 +52,6 @@ func (p *PowerwallGateway) UpdateController() {
 			log.Println(err)
 		}
 	}
-	log.Println("Refreshing Controller done")
 }
 
 func (p *PowerwallGateway) UpdateConfig() {
