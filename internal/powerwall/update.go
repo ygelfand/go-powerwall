@@ -13,8 +13,23 @@ func (p *PowerwallGateway) Refresh(force bool) {
 		}
 		defer p.refreshSem.Release(1)
 	}
+	now := time.Now().UnixNano()
+	last := p.lastRefresh.Load()
+	if now-last < 30*time.Second.Nanoseconds() {
+		log.Println("Skipping refresh, last refresh was too recent.")
+		return
+	}
+
+	if !p.lastRefresh.CompareAndSwap(last, now) {
+		log.Println("Another thread updated the timestamp, skipping refresh.")
+		return
+	}
 	p.UpdateController()
 	p.UpdateConfig()
+}
+
+func (p *PowerwallGateway) TryRefresh() {
+	p.Refresh(false)
 }
 
 func (p *PowerwallGateway) UpdateController() {

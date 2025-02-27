@@ -41,14 +41,12 @@ type ConfigResponse struct {
 		} `json:"connection,omitempty"`
 		NumberOfPhases int `json:"number_of_phases,omitempty"`
 	} `json:"island_contactor_controller,omitempty"`
-	IslandConfig struct {
-	} `json:"island_config,omitempty"`
-	Dio struct {
-	} `json:"dio,omitempty"`
-	SiteInfo struct {
+	IslandConfig struct{} `json:"island_config,omitempty"`
+	Dio          struct{} `json:"dio,omitempty"`
+	SiteInfo     struct {
 		CustomerPreferredExportRule string  `json:"customer_preferred_export_rule,omitempty"`
 		BatteryCommissionDate       string  `json:"battery_commission_date,omitempty"`
-		BackupReservePercent        int     `json:"backup_reserve_percent,omitempty"`
+		BackupReservePercent        float64 `json:"backup_reserve_percent,omitempty"`
 		MaxSiteMeterPowerAc         int     `json:"max_site_meter_power_ac,omitempty"`
 		MinSiteMeterPowerAc         int     `json:"min_site_meter_power_ac,omitempty"`
 		NominalSystemEnergyAc       int     `json:"nominal_system_energy_ac,omitempty"`
@@ -65,10 +63,8 @@ type ConfigResponse struct {
 				All struct {
 					All int `json:"ALL,omitempty"`
 				} `json:"ALL,omitempty"`
-				Summer struct {
-				} `json:"Summer,omitempty"`
-				Winter struct {
-				} `json:"Winter,omitempty"`
+				Summer struct{} `json:"Summer,omitempty"`
+				Winter struct{} `json:"Winter,omitempty"`
 			} `json:"demand_charges,omitempty"`
 			EnergyCharges struct {
 				All struct {
@@ -78,8 +74,7 @@ type ConfigResponse struct {
 					OffPeak float64 `json:"OFF_PEAK,omitempty"`
 					OnPeak  float64 `json:"ON_PEAK,omitempty"`
 				} `json:"Summer,omitempty"`
-				Winter struct {
-				} `json:"Winter,omitempty"`
+				Winter struct{} `json:"Winter,omitempty"`
 			} `json:"energy_charges,omitempty"`
 			Seasons struct {
 				Summer struct {
@@ -107,12 +102,11 @@ type ConfigResponse struct {
 					} `json:"tou_periods,omitempty"`
 				} `json:"Summer,omitempty"`
 				Winter struct {
-					FromDay    int `json:"fromDay,omitempty"`
-					ToDay      int `json:"toDay,omitempty"`
-					FromMonth  int `json:"fromMonth,omitempty"`
-					ToMonth    int `json:"toMonth,omitempty"`
-					TouPeriods struct {
-					} `json:"tou_periods,omitempty"`
+					FromDay    int      `json:"fromDay,omitempty"`
+					ToDay      int      `json:"toDay,omitempty"`
+					FromMonth  int      `json:"fromMonth,omitempty"`
+					ToMonth    int      `json:"toMonth,omitempty"`
+					TouPeriods struct{} `json:"tou_periods,omitempty"`
 				} `json:"Winter,omitempty"`
 			} `json:"seasons,omitempty"`
 			SellTariff struct {
@@ -126,10 +120,8 @@ type ConfigResponse struct {
 					All struct {
 						All int `json:"ALL,omitempty"`
 					} `json:"ALL,omitempty"`
-					Summer struct {
-					} `json:"Summer,omitempty"`
-					Winter struct {
-					} `json:"Winter,omitempty"`
+					Summer struct{} `json:"Summer,omitempty"`
+					Winter struct{} `json:"Winter,omitempty"`
 				} `json:"demand_charges,omitempty"`
 				EnergyCharges struct {
 					All struct {
@@ -139,8 +131,7 @@ type ConfigResponse struct {
 						OffPeak float64 `json:"OFF_PEAK,omitempty"`
 						OnPeak  float64 `json:"ON_PEAK,omitempty"`
 					} `json:"Summer,omitempty"`
-					Winter struct {
-					} `json:"Winter,omitempty"`
+					Winter struct{} `json:"Winter,omitempty"`
 				} `json:"energy_charges,omitempty"`
 				Seasons struct {
 					Summer struct {
@@ -168,12 +159,11 @@ type ConfigResponse struct {
 						} `json:"tou_periods,omitempty"`
 					} `json:"Summer,omitempty"`
 					Winter struct {
-						FromDay    int `json:"fromDay,omitempty"`
-						ToDay      int `json:"toDay,omitempty"`
-						FromMonth  int `json:"fromMonth,omitempty"`
-						ToMonth    int `json:"toMonth,omitempty"`
-						TouPeriods struct {
-						} `json:"tou_periods,omitempty"`
+						FromDay    int      `json:"fromDay,omitempty"`
+						ToDay      int      `json:"toDay,omitempty"`
+						FromMonth  int      `json:"fromMonth,omitempty"`
+						ToMonth    int      `json:"toMonth,omitempty"`
+						TouPeriods struct{} `json:"tou_periods,omitempty"`
 					} `json:"Winter,omitempty"`
 				} `json:"seasons,omitempty"`
 			} `json:"sell_tariff,omitempty"`
@@ -246,9 +236,8 @@ type ConfigResponse struct {
 	Customer struct {
 		Registered bool `json:"registered,omitempty"`
 	} `json:"customer,omitempty"`
-	IndustrialNetworks struct {
-	} `json:"industrial_networks,omitempty"`
-	Credentials []struct {
+	IndustrialNetworks struct{} `json:"industrial_networks,omitempty"`
+	Credentials        []struct {
 		AccessRoles []string `json:"access_roles,omitempty"`
 		Username    string   `json:"username,omitempty"`
 		Password    string   `json:"password,omitempty"`
@@ -267,7 +256,6 @@ type ConfigResponse struct {
 		AllowInternalNetworks bool `json:"allow_internal_networks,omitempty"`
 		ChargingKiosk         bool `json:"charging_kiosk,omitempty"`
 	} `json:"client_protocols,omitempty"`
-	TestTimers struct {
-	} `json:"test_timers,omitempty"`
-	SolarPowerwall bool `json:"solar_powerwall,omitempty"`
+	TestTimers     struct{} `json:"test_timers,omitempty"`
+	SolarPowerwall bool     `json:"solar_powerwall,omitempty"`
 }

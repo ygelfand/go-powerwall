@@ -31,7 +31,7 @@ func NewApi(p *powerwall.PowerwallGateway, forceRefresh bool) *Api {
 
 func timeoutMiddleware() gin.HandlerFunc {
 	return timeout.New(
-		timeout.WithTimeout(500*time.Millisecond),
+		timeout.WithTimeout(2000*time.Millisecond),
 		timeout.WithHandler(func(c *gin.Context) {
 			c.Next()
 		}),
@@ -50,19 +50,19 @@ func (api *Api) Run(listen string) {
 	{
 		v1 := base.Group("/v1")
 		{
-			v1.GET("/strings", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.strings)
-			v1.GET("/fans", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.fans)
-			v1.GET("/alerts", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.alerts)
-			v1.GET("/freq", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.voltage)
-			v1.GET("/temps", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.temps)
-			v1.GET("/pod", api.withCache(), api.withForcedRefresh(api.powerwall.UpdateController), api.pods)
+			v1.GET("/strings", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.strings)
+			v1.GET("/fans", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.fans)
+			v1.GET("/alerts", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.alerts)
+			v1.GET("/freq", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.voltage)
+			v1.GET("/temps", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.temps)
+			v1.GET("/pod", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), api.pods)
 			v1.GET("/aggregates", api.withCache(), api.powerwall.JSONReverseProxy("GET", "meters/aggregates", nil))
 			v1.GET("/soe", api.withCache(), api.powerwall.JSONReverseProxy("GET", "system_status/soe", nil))
 			v1.GET("/status", api.withCache(), api.powerwall.JSONReverseProxy("GET", "status", nil))
 			debug := v1.Group("/debug")
 			{
 				debug.GET("/config", api.withForcedRefresh(api.powerwall.UpdateConfig), api.debugConfig)
-				debug.GET("/controller", api.withForcedRefresh(api.powerwall.UpdateController), api.debugController)
+				debug.GET("/controller", api.withForcedRefresh(api.powerwall.TryRefresh), api.debugController)
 			}
 		}
 	}

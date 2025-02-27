@@ -3,6 +3,7 @@ package powerwall
 import (
 	"net/http"
 	"net/url"
+	"sync/atomic"
 
 	"golang.org/x/sync/semaphore"
 )
@@ -19,6 +20,7 @@ type PowerwallGateway struct {
 	Config       *ConfigResponse
 	Controller   *DeviceControllerResponse
 	ControllerV2 *DeviceControllerResponse
+	lastRefresh  atomic.Int64
 }
 
 type State struct {
