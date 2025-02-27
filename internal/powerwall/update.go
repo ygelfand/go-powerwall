@@ -26,6 +26,7 @@ func (p *PowerwallGateway) UpdateController() {
 			log.Println(err)
 		}
 	}
+	log.Println("Refreshing Controller V2")
 	res = p.RunQuery("DeviceControllerQueryV2", nil)
 	if res != nil {
 		err := json.Unmarshal([]byte(*res), &p.ControllerV2)
@@ -33,6 +34,7 @@ func (p *PowerwallGateway) UpdateController() {
 			log.Println(err)
 		}
 	}
+	log.Println("Refreshing Controller done")
 }
 
 func (p *PowerwallGateway) UpdateConfig() {

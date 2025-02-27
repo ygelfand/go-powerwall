@@ -1,10 +1,12 @@
 package api
 
 import (
+	"net/http"
 	"net/http/httputil"
 	"time"
 
 	"github.com/chenyahui/gin-cache/persist"
+	"github.com/gin-contrib/timeout"
 	"github.com/gin-gonic/gin"
 	"github.com/ygelfand/go-powerwall/internal/powerwall"
 )
@@ -27,8 +29,22 @@ func NewApi(p *powerwall.PowerwallGateway, forceRefresh bool) *Api {
 	}
 }
 
+func timeoutMiddleware() gin.HandlerFunc {
+	return timeout.New(
+		timeout.WithTimeout(500*time.Millisecond),
+		timeout.WithHandler(func(c *gin.Context) {
+			c.Next()
+		}),
+		timeout.WithResponse(func(c *gin.Context) {
+			c.String(http.StatusRequestTimeout, "timeout")
+		}),
+	)
+}
+
 func (api *Api) Run(listen string) {
 	router := gin.Default()
+	router.Use(gin.Recovery())
+	router.Use(timeoutMiddleware())
 	router.SetTrustedProxies(nil)
 	base := router.Group("/api")
 	{
