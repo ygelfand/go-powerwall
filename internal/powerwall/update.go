@@ -25,7 +25,6 @@ func (p *PowerwallGateway) Refresh(force bool) {
 		return
 	}
 	p.UpdateController()
-	p.UpdateControllerV2()
 }
 
 func (p *PowerwallGateway) TryRefresh() {
