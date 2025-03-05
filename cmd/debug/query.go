@@ -11,6 +11,8 @@ import (
 	"github.com/ygelfand/go-powerwall/internal/powerwall/queries"
 )
 
+var params string
+
 // queryCmd represents the query command
 func NewDebugQueryCmd(opts *options.PowerwallOptions) *cobra.Command {
 	queryCmd := &cobra.Command{
@@ -21,7 +23,7 @@ func NewDebugQueryCmd(opts *options.PowerwallOptions) *cobra.Command {
 		Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		Run: func(cmd *cobra.Command, args []string) {
 			pwr := powerwall.NewPowerwallGateway(opts.Endpoint, opts.Password)
-			debug := pwr.RunQuery(args[0], nil)
+			debug := pwr.RunQuery(args[0], &params)
 			var prettyJSON bytes.Buffer
 			err := json.Indent(&prettyJSON, []byte(*debug), "", "\t")
 			if err != nil {
@@ -31,8 +33,8 @@ func NewDebugQueryCmd(opts *options.PowerwallOptions) *cobra.Command {
 			fmt.Println(string(prettyJSON.Bytes()))
 		},
 	}
+	queryCmd.Flags().StringVarP(&params, "params", "m", "", "params")
 	originalUsageFunc := queryCmd.UsageFunc()
-
 	queryCmd.SetUsageFunc(func(cmd *cobra.Command) error {
 		originalUsageFunc(cmd)
 		fmt.Fprintf(cmd.OutOrStderr(), "\nKnown queries:\n")

@@ -2,7 +2,6 @@ package powerwall
 
 import (
 	"bytes"
-	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -53,26 +52,27 @@ func (p *PowerwallGateway) GetConfig() *string {
 	return &pr.Message.Config.GetRecv().File.Text
 }
 
-func (p *PowerwallGateway) RunQuery(query string, params interface{}) *string {
+func (p *PowerwallGateway) RunQuery(query string, params *string) *string {
 	var reqbody string
 	queryObj := queries.GetQuery(query)
 	if queryObj == nil {
 		log.Printf("Query: %s not found", query)
 		return nil
 	}
-	if params == nil {
+	if params == nil || *params == "" {
 		if queryObj.DefaultParams != nil {
 			reqbody = *queryObj.DefaultParams
 		} else {
 			reqbody = "{}"
 		}
 	} else {
-		obj, err := json.Marshal(params)
-		if err != nil {
-			log.Println(err)
-			return nil
-		}
-		reqbody = string(obj)
+		/*
+			obj, err := json.Marshal(params)
+			if err != nil {
+				log.Println(err)
+				return nil
+			}*/
+		reqbody = *params
 	}
 	pm := &ParentMessage{
 		Message: &MessageEnvelope{
