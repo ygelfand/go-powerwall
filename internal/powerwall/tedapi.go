@@ -66,12 +66,6 @@ func (p *PowerwallGateway) RunQuery(query string, params *string) *string {
 			reqbody = "{}"
 		}
 	} else {
-		/*
-			obj, err := json.Marshal(params)
-			if err != nil {
-				log.Println(err)
-				return nil
-			}*/
 		reqbody = *params
 	}
 	pm := &ParentMessage{

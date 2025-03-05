@@ -47,13 +47,24 @@ func defaultMiddleware() gin.HandlersChain {
 	}
 }
 
+func readinessMiddleware(api *Api) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if api.powerwall.Controller == nil {
+			c.JSON(http.StatusServiceUnavailable, gin.H{"error": "Service not ready"})
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}
+
 func (api *Api) Run(listen string) {
 	router := gin.Default()
 	router.Use(defaultMiddleware()...)
 	router.SetTrustedProxies(nil)
 	base := router.Group("/api")
 	{
-		v1 := base.Group("/v1", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh))
+		v1 := base.Group("/v1", api.withCache(), api.withForcedRefresh(api.powerwall.TryRefresh), readinessMiddleware(api))
 		{
 			v1.GET("/strings", api.strings)
 			v1.GET("/fans", api.fans)
