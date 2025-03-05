@@ -12,10 +12,10 @@ func (app *Api) fans(c *gin.Context) {
 
 func (app *Api) parsedFans() map[string]PvacFan {
 	fans := map[string]PvacFan{}
-	if app.powerwall.ControllerV2 == nil {
+	if app.powerwall.Controller == nil {
 		return fans
 	}
-	for id, inv := range app.powerwall.ControllerV2.EsCan.Bus.Pvac {
+	for id, inv := range app.powerwall.Controller.EsCan.Bus.Pvac {
 		if !inv.PVACStatus.IsMIA {
 			idx := pvacIndex(id)
 			fans[fmt.Sprintf("A%s", idx)] = PvacFan{

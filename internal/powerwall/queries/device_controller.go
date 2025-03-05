@@ -8,6 +8,8 @@ var deviceControllerQuery = &SignedQuery{
 	"MSA_pcbaId",
 	"MSA_usageId",
 	"MSA_appGitHash",
+  "PVAC_Fan_Speed_Actual_RPM",
+	"PVAC_Fan_Speed_Target_RPM",
 	"MSA_HeatingRateOccurred",
 	"THC_AmbientTemp",
   "MSA_HeatingRateLockoutEnabled",
